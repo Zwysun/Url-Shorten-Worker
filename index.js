@@ -37,6 +37,14 @@ async function save_url(URL){
     else
         save_url(URL)
 }
+async function save_custom_url(URL, custom_key){
+  let is_exist=await LINKS.get(custom_key)
+  console.log(is_exist)
+  if (is_exist == null)
+      return await LINKS.put(custom_key, URL), true
+  else
+      return undefined, false
+}
 async function handleRequest(request) {
   console.log(request)
   if (request.method === "POST") {
@@ -50,7 +58,24 @@ async function handleRequest(request) {
       "Access-Control-Allow-Methods": "POST",
       },
     })}
-    let stat,random_key=await save_url(req["url"])
+    var stat, random_key
+    if (req.hasOwnProperty("custom") && req["custom"] != "unknown") {
+      stat, set_flag = await save_custom_url(req["url"], req["custom"])
+      if (!set_flag) {
+        return new Response(`{"status":200,"key":": Error:The custom key has already been used."}`, {
+          headers: {
+          "content-type": "text/html;charset=UTF-8",
+          "Access-Control-Allow-Origin":"*",
+          "Access-Control-Allow-Methods": "POST",
+          },
+        })
+      } else {
+        random_key = req["custom"]
+      }
+    }
+    else {
+      stat,random_key=await save_url(req["url"])
+    }
     console.log(stat)
     if (typeof(stat) == "undefined"){
       return new Response(`{"status":200,"key":"/`+random_key+`"}`, {
@@ -83,8 +108,33 @@ async function handleRequest(request) {
   const path = requestURL.pathname.split("/")[1]
   console.log(path)
   if(!path){
-
-    const html= await fetch("https://cdn.jsdelivr.net/gh/xyTom/Url-Shorten-Worker@gh-pages/index.html")
+    var os = function() {
+      var ua = request.headers.get('user-agent'),
+      isWindowsPhone = /(?:Windows Phone)/.test(ua),
+      isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone, 
+      isAndroid = /(?:Android)/.test(ua), 
+      isFireFox = /(?:Firefox)/.test(ua), 
+      isChrome = /(?:Chrome|CriOS)/.test(ua),
+      isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox && /(?:Tablet)/.test(ua)),
+      isPhone = /(?:iPhone)/.test(ua) && !isTablet,
+      isPc = !isPhone && !isAndroid && !isSymbian;
+      return {
+          isTablet: isTablet,
+          isPhone: isPhone,
+          isAndroid : isAndroid,
+          isPc : isPc
+      };
+    }();
+    var html_url
+    if (os.isPc)
+    {
+        html_url = "https://cdn.jsdelivr.net/gh/Zwysun/Url-Shorten-Worker@gh-pages/theme/urlcool/index.html"
+    }
+    else
+    {
+        html_url = "https://cdn.jsdelivr.net/gh/Zwysun/Url-Shorten-Worker@gh-pages/index.html"
+    }
+    const html= await fetch(html_url)
     
     return new Response(await html.text(), {
     headers: {

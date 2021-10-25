@@ -1,8 +1,10 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
   <meta http-equiv="content-type" content="txt/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/Zwysun/Url-Shorten-Worker@gh-pages/favicon.ico">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha256-L/W5Wfqfa0sdBNIKN9cG6QA5F2qx4qICmU2VgLruv9Y=" crossorigin="anonymous">
   <script>
     if(window.screen.width<=420)
@@ -114,44 +116,84 @@
         position: absolute;
         cursor: auto;
         width: 700px;
-height: 60px;
-background: #FFFFFF;
-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-border-radius: 30px;
-margin-left:65px;
-border-width: 0;
-margin-top:5px;
+        height: 60px;
+        background: #FFFFFF;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+        border-radius: 30px;
+        margin-left:65px;
+        border-width: 0;
+        margin-top:5px;
     }
     .btn-cus{position: absolute;
         width: 177px;
-height: 70px;
-background: #644DEF;
-box-shadow: 0px 2px 10px 0px #0E0061;
-border-width: 0;
-border-radius: 40px;
-color: #FFFFFF;
-font-size: 28px;
-font-family: MyriadPro-Semibold, MyriadPro;
-font-weight: 600;
-line-height: 34px;
-right: 65px;
+        height: 70px;
+        background: #644DEF;
+        box-shadow: 0px 2px 10px 0px #0E0061;
+        border-width: 0;
+        border-radius: 40px;
+        color: #FFFFFF;
+        font-size: 28px;
+        font-family: MyriadPro-Semibold, MyriadPro;
+        font-weight: 600;
+        line-height: 34px;
+        right: 65px;
     }
     .card-text {
         position: absolute;
         width: 100%;
         bottom: 20px;
         margin: 0 auto;
-      text-align: center;
-      font-size: 18px;
-color: #3F76FF;
+        text-align: center;
+        font-size: 18px;
+        color: #b0c2fd;
     }
     .card-text > a {
-      text-decoration: none;
-color: #3F76FF;
+        text-decoration: none;
+        color: #b0c2fd;
     }
     .card-text > a {
-      cursor: pointer;
+        cursor: pointer;
     }
+    .customise-button {
+        display: block;
+        position: absolute;
+        margin-left: 70px;
+        padding-top: 3px;
+        top: 280px;
+        font-family: Montserrat,sans-serif;
+        font-size: .9em;
+        color: #ffffff;
+        cursor: pointer;
+
+    }
+    .customise-button > img{
+        width: 18px;
+        cursor: pointer;
+    }
+    .customise-container {
+        display: block;
+        position: absolute;
+        margin-left: 185px;
+        top: 280px;
+        font-family: Montserrat,sans-serif;
+        color: #ffffff;
+    }
+    .customise-container > input{
+        padding-left: 0.6rem;
+        font-family: Montserrat,sans-serif;
+        border-radius: 12px;
+        cursor: auto;
+    }
+    /* .copyright {
+        position: fixed;
+        color: #999;
+        font-size: .9em;
+        line-height: 1em;
+        margin: 2 auto 1 auto;
+        margin-top: -60px;
+        padding: 0;
+        text-align: center;
+    } */
     @media (max-width: 769px) {
       .card {
         width: 80%;
@@ -188,8 +230,20 @@ color: #3F76FF;
         <input type="text" class="form-control" placeholder="Example: https://example.com/" id="text">
         <button class="btn-cus" type="button" onclick='shorturl()' id="searchbtn">Shorten it</button>
       </div>    
-      <div class="card-text">
+      <div>
+        <span class="customise-button" id="customise-toggle" onclick="showcustom()"><img src="https://cdn.jsdelivr.net/gh/Zwysun/Url-Shorten-Worker@gh-pages/theme/urlcool/custom-url.svg" alt="Options"> Custom URL</span>
+      </div>
+      <div class="customise-container" id="customise-link" style="display: none;">
+        <span>/</span>
+        <input type="text" id="customkey" placeholder="自定义后缀">
+      </div>
+      <!-- <div class="card-text">
         Powered by <a href="https://github.com/xyTom/Url-Shorten-Worker/" target="_self">xyTom</a>
+      </div> -->
+      <div class="card-text">
+        <span style="padding-right: 24px;">&copy; 2021 Animo</span>
+        <a style="padding-right: 24px;" href="https://github.com/Zwysun" target="_blank">Github</a>
+        <a href="mailto:hello@animo.top">Mail</a>
       </div>
       <p id="notice"></p>             
     </div>
@@ -210,10 +264,22 @@ color: #3F76FF;
         </div>
       </div>
     </div>
-  </div>         
+  </div>
+  <script>
+    function showcustom() {
+      var link = document.getElementById("customise-link")
+      if (link.style.display == "none") {
+        link.style.display = ""
+      }
+      else
+      {
+        link.style.display = "none"
+      }
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha256-WqU1JavFxSAMcLP2WIOI+GB2zWmShMI82mTpLDcqFUg=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/url-shorten-worker@1.0.5/main.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/gh/Zwysun/Url-Shorten-Worker@gh-pages/main.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
